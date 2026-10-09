@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#12241f">
+    <meta name="description"
+      content="Free pricing and profit calculator for small businesses, home sellers, creators and side hustles. Calculate selling price, profit margin, platform fees and break-even units.">
+    <title>SellSmart — Free Pricing & Profit Calculator</title>
+    <style>
+      :root {
+        --ink: #14251f;
+        --muted: #65736d;
+        --paper: #f5f7f2;
+        --card: #fff;
+        --line: #dfe7df;
+        --green: #176b4d;
+        --green2: #dff3e8;
+        --lime: #c7f36b;
+        --amber: #fff3d6;
+        --shadow: 0 12px 34px rgba(19, 43, 32, .07)
+      }
+
+      * {
+        box-sizing: border-box
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
+      }
+
+      button,
+      input,
+      select {
+        font: inherit
+      }
+
+      button {
+        cursor: pointer
+      }
+
+      .wrap {
+        max-width: 1120px;
+        margin: auto;
+        padding: 0 22px
+      }
+
+      header {
+        background: #12241f;
+        color: #fff;
+        padding: 18px 0 64px;
+        margin-bottom: 18px;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: -.5px;
+        font-size: 20px
+      }
+
+      .logo {
+        display: grid;
+        place-items: center;
+        background: var(--lime);
+        color: #13271e;
+        border-radius: 10px;
+        width: 35px;
+        height: 35px;
+        font-weight: 900
+      }
+
+      .nav-note {
+        font-size: 12px;
+        color: #c1d0c7;
+        border: 1px solid #3b5147;
+        border-radius: 99px;
+        padding: 7px 12px
+      }
+
+      .hero {
+        padding-top: 48px;
+        max-width: 720px
+      }
+
+      .eyebrow {
+        color: var(--lime);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.6px;
+        text-transform: uppercase
+      }
+
+      h1 {
+        font-size: clamp(34px, 5vw, 56px);
+        line-height: 1.04;
+        letter-spacing: -2px;
+        margin: 14px 0 18px
+      }
+
+      .hero p {
+        font-size: 17px;
+        color: #c8d5cd;
+        max-width: 620px;
+        margin: 0
+      }
+
+      main {
+        margin-top: -32px;
+        padding-bottom: 52px
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+        gap: 20px;
+        align-items: start
+      }
+
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        overflow: hidden
+      }
+
+      .panel-head {
+        padding: 22px 24px 16px;
+        border-bottom: 1px solid #edf1ec
+      }
+
+      .panel-head h2 {
+        margin: 0;
+        font-size: 19px;
+        letter-spacing: -.5px
+      }
+
+      .panel-head p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 13px
+      }
+
+      .form-body {
+        padding: 22px 24px 24px
+      }
+
+      .section-label {
+        font-size: 11px;
+        letter-spacing: 1.3px;
+        font-weight: 800;
+        color: #718078;
+        text-transform: uppercase;
+        margin: 2px 0 12px
+      }
+
+      .fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px
+      }
+
+      .field {
+        min-width: 0
+      }
+
+      .field.full {
+        grid-column: 1/-1
+      }
+
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #43534b;
+        margin-bottom: 6px
+      }
+
+      .input-wrap {
+        display: flex;
+        border: 1px solid #d8e1d8;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff
+      }
+
+      .prefix {
+        display: grid;
+        place-items: center;
+        padding: 0 11px;
+        background: #f4f7f2;
+        color: #6b796f;
+        border-right: 1px solid #e0e7df;
+        font-size: 13px
+      }
+
+      .input-wrap input {
+        width: 100%;
+        min-width: 0;
+        border: 0;
+        outline: 0;
+        padding: 11px 10px;
+        color: var(--ink);
+        background: transparent
+      }
+
+      .input-wrap:focus-within {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px #176b4d16
+      }
+
+      input[type=number] {
+        appearance: textfield
+      }
+
+      input::-webkit-inner-spin-button {
+        appearance: none
+      }
+
+      .hint {
+        font-size: 11px;
+        color: #829087;
+        margin-top: 5px
+      }
+
+      .advanced {
+        margin-top: 19px;
+        border-top: 1px solid #edf1ec;
+        padding-top: 17px
+      }
+
+      .advanced summary {
+        font-size: 13px;
+        font-weight: 750;
+        cursor: pointer;
+        color: #315c49
+      }
+
+      .advanced .fields {
+        margin-top: 14px
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 11px;
+        padding: 12px 16px;
+        font-weight: 750;
+        font-size: 13px
+      }
+
+      .btn-primary {
+        background: var(--green);
+        color: #fff
+      }
+
+      .btn-primary:hover {
+        background: #0f573e
+      }
+
+      .btn-light {
+        background: #eff4ee;
+        color: #294437
+      }
+
+      .btn-light:hover {
+        background: #e3ece3
+      }
+
+      .result {
+        background: #14271f;
+        color: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: var(--shadow)
+      }
+
+      .result-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px
+      }
+
+      .result-top h2 {
+        margin: 0;
+        font-size: 19px
+      }
+
+      .live {
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--lime);
+        border: 1px solid #4d6b59;
+        border-radius: 99px;
+        padding: 5px 9px
+      }
+
+      .price-label {
+        margin-top: 26px;
+        color: #b9c9bf;
+        font-size: 12px
+      }
+
+      .big-price {
+        font-size: clamp(38px, 5vw, 54px);
+        font-weight: 850;
+        letter-spacing: -2px;
+        line-height: 1.1;
+        margin: 4px 0 8px
+      }
+
+      .subprice {
+        font-size: 12px;
+        color: #c4d1c8
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 23px
+      }
+
+      .kpi {
+        border: 1px solid #3a5145;
+        border-radius: 13px;
+        padding: 13px
+      }
+
+      .kpi span {
+        display: block;
+        color: #b6c8bd;
+        font-size: 11px
+      }
+
+      .kpi strong {
+        display: block;
+        font-size: 20px;
+        margin-top: 4px;
+        letter-spacing: -.5px
+      }
+
+      .kpi small {
+        font-size: 11px;
+        color: #c3d0c7
+      }
+
+      .bar-wrap {
+        margin-top: 23px
+      }
+
+      .bar-title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #c2d1c7;
+        margin-bottom: 8px
+      }
+
+      .bar {
+        height: 9px;
+        border-radius: 99px;
+        background: #3a4e43;
+        overflow: hidden;
+        display: flex
+      }
+
+      .bar span {
+        display: block;
+        height: 100%;
+        transition: width .2s
+      }
+
+      .bar .cost {
+        background: #f0bd5c
+      }
+
+      .bar .fee {
+        background: #8cc6ff
+      }
+
+      .bar .profit {
+        background: var(--lime)
+      }
+
+      .breakdown {
+        margin-top: 22px;
+        border-top: 1px solid #3a5145;
+        padding-top: 16px
+      }
+
+      .breakdown h3 {
+        font-size: 13px;
+        margin: 0 0 9px
+      }
+
+      .line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 6px 0;
+        font-size: 12px;
+        color: #c3d1c8
+      }
+
+      .line strong {
+        color: #fff;
+        font-weight: 650
+      }
+
+      .line.total {
+        border-top: 1px solid #3a5145;
+        margin-top: 5px;
+        padding-top: 12px;
+        font-size: 13px;
+        color: #fff
+      }
+
+      .note {
+        font-size: 11px;
+        color: #a9bcb0;
+        line-height: 1.55;
+        margin-top: 14px
+      }
+
+      .below {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 20px
+      }
+
+      .mini {
+        padding: 18px 19px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px
+      }
+
+      .mini .mini-icon {
+        width: 31px;
+        height: 31px;
+        border-radius: 9px;
+        background: var(--green2);
+        display: grid;
+        place-items: center;
+        color: var(--green);
+        font-weight: 900
+      }
+
+      .mini h3 {
+        font-size: 14px;
+        margin: 11px 0 5px
+      }
+
+      .mini p {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0
+      }
+
+      footer {
+        padding: 23px 0 30px;
+        color: #6e7b72;
+        font-size: 11px;
+        border-top: 1px solid #e2e8e0
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #12241f;
+        color: #fff;
+        border-radius: 99px;
+        padding: 11px 17px;
+        font-size: 13px;
+        box-shadow: var(--shadow);
+        display: none;
+        z-index: 10
+      }
+
+      .toast.show {
+        display: block
+      }
+
+      @media(max-width:800px) {
+        .app {
+          grid-template-columns: 1fr
+        }
+
+        .result {
+          order: -1
+        }
+
+        .below {
+          grid-template-columns: 1fr 1fr
+        }
+
+        .hero {
+          padding-top: 38px
+        }
+      }
+
+      @media(max-width:480px) {
+        .wrap {
+          padding: 0 14px
+        }
+
+        header {
+          padding-bottom: 55px
+        }
+
+        .hero p {
+          font-size: 15px
+        }
+
+        .form-body,
+        .panel-head {
+          padding-left: 17px;
+          padding-right: 17px
+        }
+
+        .result {
+          padding: 20px
+        }
+
+        .fields {
+          gap: 12px
+        }
+
+        .below {
+          grid-template-columns: 1fr
+        }
+
+        .nav-note {
+          font-size: 10px
+        }
+
+        .big-price {
+          font-size: 43px
+        }
+      }
+
+      @media print {
+        header {
+          padding: 20px;
+          background: #fff;
+          color: #111
+        }
+
+        .hero p,
+        .eyebrow,
+        .nav-note {
+          color: #333
+        }
+
+        .hero h1 {
+          font-size: 30px
+        }
+
+        .app {
+          grid-template-columns: 1fr 1fr
+        }
+
+        .result {
+          background: #fff;
+          color: #111;
+          border: 1px solid #ccc
+        }
+
+        .result .price-label,
+        .result .subprice,
+        .line,
+        .line strong,
+        .bar-title,
+        .kpi span,
+        .kpi strong,
+        .kpi small,
+        .breakdown h3 {
+          color: #111
+        }
+
+        .kpi,
+        .breakdown {
+          border-color: #ccc
+        }
+
+        .note {
+          color: #444
+        }
+
+        .below,
+        footer,
+        .actions {
+          display: none
+        }
+
+        body {
+          background: #fff
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="nav">
+          <div class="brand"><span class="logo">S</span> SellSmart</div>
+          <div class="nav-note">Free tool · No sign-up · Private by design</div>
+        </div>
+        <div class="hero">
+          <div class="eyebrow">For makers, sellers & side hustles</div>
+          <h1>Price smarter.<br>Keep more profit.</h1>
+          <p>Find a selling price that covers your costs, platform fees and profit goal — before you list, launch or
+            take an order.</p>
+        </div>
+      </div>
+    </header>
+    <main class="wrap">
+      <div class="app">
+        <section class="panel" aria-labelledby="inputs-title">
+          <div class="panel-head">
+            <h2 id="inputs-title">Your product or service</h2>
+            <p>Enter your costs. Results update instantly.</p>
+          </div>
+          <div class="form-body">
+            <div class="section-label">Costs per item / order</div>
+            <div class="fields">
+              <div class="field"><label for="cost">Product / delivery cost</label>
+                <div class="input-wrap"><span class="prefix">₹</span><input id="cost" type="number" min="0" step="0.01"
+                    value="180"></div>
+                <div class="hint">Materials, stock or direct work</div>
+              </div>
+              <div class="field"><label for="pack">Packaging / extras</label>
+                <div class="input-wrap"><span class="prefix">₹</span><input id="pack" type="number" min="0" step="0.01"
+                    value="20"></div>
+              </div>
+              <div class="field"><label for="ship">Shipping / fulfilment</label>
+                <div class="input-wrap"><span class="prefix">₹</span><input id="ship" type="number" min="0" step="0.01"
+                    value="40"></div>
+              </div>
+              <div class="field"><label for="other">Other variable costs</label>
+                <div class="input-wrap"><span class="prefix">₹</span><input id="other" type="number" min="0" step="0.01"
+                    value="10"></div>
+              </div>
+            </div>
+            <div class="advanced">
+              <details open>
+                <summary>Fees, profit goal & monthly costs</summary>
+                <div class="fields">
+                  <div class="field"><label for="fee">Marketplace / payment fees</label>
+                    <div class="input-wrap"><input id="fee" type="number" min="0" max="99" step="0.1" value="5"><span
+                        class="prefix">%</span></div>
+                    <div class="hint">Percentage of selling price</div>
+                  </div>
+                  <div class="field"><label for="profit">Target profit margin</label>
+                    <div class="input-wrap"><input id="profit" type="number" min="0" max="95" step="1" value="25"><span
+                        class="prefix">%</span></div>
+                    <div class="hint">Profit as % of selling price</div>
+                  </div>
+                  <div class="field"><label for="fixed">Monthly fixed costs</label>
+                    <div class="input-wrap"><span class="prefix">₹</span><input id="fixed" type="number" min="0"
+                        step="1" value="1500"></div>
+                    <div class="hint">Rent, subscriptions, tools, etc.</div>
+                  </div>
+                  <div class="field"><label for="volume">Expected sales / month</label>
+                    <div class="input-wrap"><input id="volume" type="number" min="1" step="1" value="50"><span
+                        class="prefix">units</span></div>
+                  </div>
+                </div>
+              </details>
+            </div>
+            <div class="actions"><button class="btn btn-primary" id="reset">Reset example</button><button
+                class="btn btn-light" id="download">Download results CSV</button><button class="btn btn-light"
+                id="print">Print / Save PDF</button></div>
+          </div>
+        </section>
+        <aside class="result" aria-live="polite">
+          <div class="result-top">
+            <h2>Your pricing snapshot</h2><span class="live">LIVE RESULTS</span>
+          </div>
+          <div class="price-label">Suggested selling price</div>
+          <div class="big-price" id="suggested">₹ 0</div>
+          <div class="subprice" id="price-sub">To reach your target margin after listed costs</div>
+          <div class="kpis">
+            <div class="kpi"><span>Profit per sale</span><strong id="perprofit">₹0</strong><small id="margin-label">0%
+                margin</small></div>
+            <div class="kpi"><span>Profit per month*</span><strong id="monthly">₹0</strong><small>After estimated fixed
+                costs</small></div>
+            <div class="kpi"><span>Break-even sales</span><strong id="breakeven">0</strong><small>Units per
+                month</small></div>
+            <div class="kpi"><span>Markup on cost</span><strong id="markup">0%</strong><small>Profit ÷ direct
+                costs</small></div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-title"><span>Where each ₹ goes</span><span id="bar-margin">0% profit</span></div>
+            <div class="bar"><span class="cost" id="costbar" style="width:50%"></span><span class="fee" id="feebar"
+                style="width:5%"></span><span class="profit" id="profitbar" style="width:25%"></span></div>
+          </div>
+          <div class="breakdown">
+            <h3>Per-sale breakdown</h3>
+            <div class="line"><span>Direct costs</span><strong id="direct">₹0</strong></div>
+            <div class="line"><span>Estimated platform fees</span><strong id="fees">₹0</strong></div>
+            <div class="line"><span>Fixed cost allocation</span><strong id="fixedalloc">₹0</strong></div>
+            <div class="line total"><span>Estimated profit before tax</span><strong id="net">₹0</strong></div>
+          </div>
+          <p class="note">*Monthly profit uses your sales estimate and fixed costs. This is a planning estimate, not
+            accounting or tax advice. Actual fees, returns, discounts and taxes may change results.</p>
+        </aside>
+      </div>
+      <section class="below" aria-label="How to use SellSmart">
+        <article class="mini">
+          <div class="mini-icon">1</div>
+          <h3>Count every cost</h3>
+          <p>Include materials, packaging, delivery and the fees you tend to forget.</p>
+        </article>
+        <article class="mini">
+          <div class="mini-icon">2</div>
+          <h3>Choose a real margin</h3>
+          <p>Set a profit goal that fits your market. Compare it with what customers will pay.</p>
+        </article>
+        <article class="mini">
+          <div class="mini-icon">3</div>
+          <h3>Check break-even</h3>
+          <p>Estimate how many sales you need to cover monthly fixed costs.</p>
+        </article>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner"><span>© <span id="year"></span> SellSmart · Free pricing
+          calculator</span><span>Your inputs stay in this browser. No account or server required.</span></div>
+    </footer>
+    <div class="toast" id="toast" role="status"></div>
+    <script>
+      (() => {
+        const ids = ['cost', 'pack', 'ship', 'other', 'fee', 'profit', 'fixed', 'volume'];
+        const el = id => document.getElementById(id);
+        const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(Number.isFinite(n) ? n : 0);
+        const num = id => Math.max(0, Number(el(id).value) || 0);
+        const pct = n => (n * 100).toFixed(1).replace(/\.0$/, '') + '%';
+        let state = {};
+        function calculate() {
+          const direct = num('cost') + num('pack') + num('ship') + num('other');
+          const fee = Math.min(num('fee'), 99) / 100, margin = Math.min(num('profit'), 95) / 100;
+          const fixed = num('fixed'), volume = Math.max(1, Math.floor(num('volume')));
+          const denominator = 1 - fee - margin;
+          const valid = denominator > 0;
+          const price = valid ? direct / denominator : 0;
+          const feeAmt = price * fee, profit = price - direct - feeAmt;
+          const fixedAlloc = fixed / volume;
+          const monthly = profit * volume - fixed;
+          const contribution = price - direct - feeAmt;
+          const breakEven = contribution > 0 ? Math.ceil(fixed / contribution) : Infinity;
+          const markup = direct > 0 ? profit / direct * 100 : 0;
+          el('suggested').textContent = valid ? money(price) : 'Not possible';
+          el('price-sub').textContent = valid ? 'Target margin: ' + pct(margin) + ' · fee estimate: ' + pct(fee) : 'Lower your fee or profit target so they total less than 100%.';
+          el('perprofit').textContent = money(profit);
+          el('margin-label').textContent = pct(price > 0 ? profit / price : 0) + ' margin';
+          el('monthly').textContent = money(monthly);
+          el('breakeven').textContent = Number.isFinite(breakEven) ? breakEven.toLocaleString('en-IN') : '—';
+          el('markup').textContent = (Number.isFinite(markup) ? markup : 0).toFixed(1) + '%';
+          el('direct').textContent = money(direct); el('fees').textContent = money(feeAmt);
+          el('fixedalloc').textContent = money(fixedAlloc); el('net').textContent = money(profit - fixedAlloc);
+          const safePrice = price > 0 && valid ? price : 1;
+          el('costbar').style.width = Math.min(100, direct / safePrice * 100) + '%';
+          el('feebar').style.width = Math.min(100, feeAmt / safePrice * 100) + '%';
+          el('profitbar').style.width = Math.min(100, Math.max(0, profit / safePrice * 100)) + '%';
+          el('bar-margin').textContent = pct(price > 0 ? profit / price : 0) + ' profit';
+          state = { direct, fee, margin, fixed, volume, price, feeAmt, profit, fixedAlloc, monthly, breakEven, markup, valid };
+        }
+        function toast(message) { const t = el('toast'); t.textContent = message; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
+        ids.forEach(id => el(id).addEventListener('input', calculate));
+        el('reset').addEventListener('click', () => { const vals = { cost: 180, pack: 20, ship: 40, other: 10, fee: 5, profit: 25, fixed: 1500, volume: 50 }; Object.entries(vals).forEach(([k, v]) => el(k).value = v); calculate(); toast('Example values restored'); });
+        el('print').addEventListener('click', () => window.print());
+        el('download').addEventListener('click', () => {
+          const s = state;
+          const rows = [['SellSmart pricing results', 'Value'], ['Suggested selling price', s.valid ? s.price : 'Not possible'], ['Direct costs', s.direct], ['Marketplace/payment fee rate', s.fee * 100 + '%'], ['Estimated fees per sale', s.feeAmt], ['Target margin', s.margin * 100 + '%'], ['Estimated profit per sale', s.profit], ['Monthly fixed costs', s.fixed], ['Expected sales per month', s.volume], ['Estimated monthly profit before tax', s.monthly], ['Break-even sales', Number.isFinite(s.breakEven) ? s.breakEven : 'Not available'], ['Markup on direct costs', s.markup + '%'], ['Note', 'Estimates only; excludes taxes, returns, discounts and unlisted costs.']];
+          const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+          const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' }), url = URL.createObjectURL(blob), a = document.createElement('a');
+          a.href = url; a.download = 'sellsmart-pricing-results.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); toast('CSV downloaded');
+        });
+        el('year').textContent = new Date().getFullYear(); calculate();
+      })();
+    </script>
+  </body>
+
+</html>
