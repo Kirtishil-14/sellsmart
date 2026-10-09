@@ -630,6 +630,9 @@
         }
       }
     </style>
+    <!-- GoatCounter (actions only; page views come from Cloudflare): replace YOUR_CODE with your goatcounter.com code -->
+    <script data-goatcounter="https://YOUR_CODE.goatcounter.com/count"
+      data-goatcounter-settings='{"no_onload": true}' async src="https://gc.zgo.at/count.js"></script>
   </head>
 
   <body>
@@ -800,10 +803,18 @@
           state = { direct, fee, margin, fixed, volume, price, feeAmt, profit, fixedAlloc, monthly, breakEven, markup, valid };
         }
         function toast(message) { const t = el('toast'); t.textContent = message; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
-        ids.forEach(id => el(id).addEventListener('input', calculate));
-        el('reset').addEventListener('click', () => { const vals = { cost: 180, pack: 20, ship: 40, other: 10, fee: 5, profit: 25, fixed: 1500, volume: 50 }; Object.entries(vals).forEach(([k, v]) => el(k).value = v); calculate(); toast('Example values restored'); });
-        el('print').addEventListener('click', () => window.print());
+        // Cloudflare Web Analytics has no event API, so actions go to GoatCounter; no input values are sent.
+        function track(name) { try { window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path: name, title: name, event: true }); } catch (e) { } }
+        let usedCalculator = false;
+        ids.forEach(id => el(id).addEventListener('input', () => {
+          calculate();
+          if (!usedCalculator) { usedCalculator = true; track('calculator_used'); }
+        }));
+        el('reset').addEventListener('click', () => {
+          track('reset_clicked'); const vals = { cost: 180, pack: 20, ship: 40, other: 10, fee: 5, profit: 25, fixed: 1500, volume: 50 }; Object.entries(vals).forEach(([k, v]) => el(k).value = v); calculate(); toast('Example values restored'); });
+        el('print').addEventListener('click', () => { track('print_clicked'); window.print(); });
         el('download').addEventListener('click', () => {
+          track('csv_downloaded');
           const s = state;
           const rows = [['SellSmart pricing results', 'Value'], ['Suggested selling price', s.valid ? s.price : 'Not possible'], ['Direct costs', s.direct], ['Marketplace/payment fee rate', s.fee * 100 + '%'], ['Estimated fees per sale', s.feeAmt], ['Target margin', s.margin * 100 + '%'], ['Estimated profit per sale', s.profit], ['Monthly fixed costs', s.fixed], ['Expected sales per month', s.volume], ['Estimated monthly profit before tax', s.monthly], ['Break-even sales', Number.isFinite(s.breakEven) ? s.breakEven : 'Not available'], ['Markup on direct costs', s.markup + '%'], ['Note', 'Estimates only; excludes taxes, returns, discounts and unlisted costs.']];
           const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n');
@@ -813,6 +824,7 @@
         el('year').textContent = new Date().getFullYear(); calculate();
       })();
     </script>
+    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3d9188a6a2bc4e32958099053e74c667"}'></script><!-- End Cloudflare Web Analytics -->
   </body>
 
 </html>
